@@ -25,7 +25,7 @@
 # you do not delete the provisions above, a recipient may use your version of
 # this file under either the MPL or the GPLv2 License.
 
-import struct, binascii, itertools, socket
+import struct, binascii, itertools, socket, logging
 
 
 # return value constants
@@ -107,7 +107,7 @@ class NSCANotifier(object):
         elif mode == 0:
             return toserver_pkt
         else:
-            print "no supported encryption_mode"
+            logging.info("no supported encryption_mode")
         return toserver_pkt
 
     def _encode_to_server(self, iv, timestamp, return_code, host_name,
