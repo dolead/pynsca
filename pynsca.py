@@ -178,7 +178,7 @@ class NSCANotifier(object):
             data = sk.recv(self.fromserver_fmt_size - len(buf))
             if not data:
                 break
-            buf += data
+            buf += str(data)
 
         # make up reply
         iv, timestamp = self._decode_from_server(buf)
