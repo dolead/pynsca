@@ -173,12 +173,12 @@ class NSCANotifier(object):
         sk.connect((self.monitoring_server, self.monitoring_port))
 
         # read packet
-        buf = ''
+        buf = b''
         while len(buf) < self.fromserver_fmt_size:
             data = sk.recv(self.fromserver_fmt_size - len(buf))
             if not data:
                 break
-            buf += str(data)
+            buf += data
 
         # make up reply
         iv, timestamp = self._decode_from_server(buf)
