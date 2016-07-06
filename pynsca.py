@@ -92,9 +92,9 @@ class NSCANotifier(object):
                 cycle = [iv, password]
             for key in cycle:
                 toserver_pkt = ''.join([chr(p^i)
-                                for p,i in itertools.izip(
-                                        itertools.imap(ord, toserver_pkt),
-                                        itertools.imap(ord, itertools.cycle(key)))])
+                                for p,i in zip(
+                                        map(ord, toserver_pkt),
+                                        map(ord, itertools.cycle(key)))])
         elif mode == 16:
             import mcrypt
             m = mcrypt.MCRYPT('rijndael-256', 'cfb')
@@ -140,7 +140,7 @@ class NSCANotifier(object):
         return text.replace('\\', r'\\').replace('\n', r'\n')
 
     def _force_str(self, text):
-        if isinstance(text, unicode):
+        if isinstance(text, str):
             return text.encode('utf-8')
         return text
 
