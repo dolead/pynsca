@@ -93,8 +93,8 @@ class NSCANotifier(object):
             for key in cycle:
                 toserver_pkt = ''.join([chr(p^i)
                                 for p,i in zip(
-                                        map(ord, toserver_pkt),
-                                        map(ord, itertools.cycle(key)))])
+                                        map(ord, toserver_pkt.decode('latin1')),
+                                        map(ord, itertools.cycle(key.decode('latin1'))))])
         elif mode == 16:
             import mcrypt
             m = mcrypt.MCRYPT('rijndael-256', 'cfb')
@@ -124,15 +124,11 @@ class NSCANotifier(object):
         ]
 
         # calculate crc32 and insert into the list
-        crc32 = binascii.crc32(struct.pack(self.toserver_fmt, *toserver))
-        toserver[1] = crc32
-
-        # convert to bytes
         toserver_pkt = struct.pack(self.toserver_fmt, *toserver)
-
+        crc32 = binascii.crc32(toserver_pkt)
+        toserver[1] = crc32
         # and encode or encrypt
         toserver_pkt = self._encrypt_packet(toserver_pkt, iv, mode, password)
-
         return toserver_pkt
 
     def _escape_newlines(self, text):
@@ -187,5 +183,5 @@ class NSCANotifier(object):
                 self.encryption_mode, self.password)
 
         # and send it
-        sk.sendall(toserver_pkt)
+        sk.sendall(toserver_pkt.encode('latin1'))
         sk.close()
